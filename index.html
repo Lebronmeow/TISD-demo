@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Demo - Job Legitimacy Extension</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons (for browser UI icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <!-- The Fake Desktop Environment -->
+    <div class="desktop-environment">
+        
+        <!-- The Fake Browser Window -->
+        <div class="browser-window">
+            
+            <!-- Title Bar & Tabs -->
+            <div class="browser-header">
+                <div class="window-controls">
+                    <span class="control red"></span>
+                    <span class="control yellow"></span>
+                    <span class="control green"></span>
+                </div>
+                <div class="browser-tabs">
+                    <div class="tab active">
+                        <i class="ph ph-briefcase"></i>
+                        <span class="tab-title">Frontend Engineer - Remote</span>
+                        <i class="ph ph-x tab-close"></i>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+            </div>
+
+            <!-- Address Bar & Toolbar -->
+            <div class="browser-toolbar">
+                <div class="nav-buttons">
+                    <button id="btn-back"><i class="ph ph-arrow-left"></i></button>
+                    <button id="btn-forward"><i class="ph ph-arrow-right"></i></button>
+                    <button id="btn-reload"><i class="ph ph-arrows-clockwise"></i></button>
+                </div>
+                
+                <div class="address-bar-container">
+                    <div class="address-bar">
+                        <i class="ph ph-lock-key"></i>
+                        <span class="url">https://www.techjobs-remote-hire.corp/careers/frontend-engineer-4912</span>
+                        <i class="ph ph-star url-star"></i>
+                    </div>
+                </div>
+
+                <div class="extensions-area">
+                    <button class="extension-icon" id="job-analyzer-ext-btn" title="Job Legitimacy Analyzer">
+                        <i class="ph ph-shield-check"></i>
+                    </button>
+                    <button class="profile-icon"><i class="ph ph-user-circle"></i></button>
+                    <button class="menu-icon"><i class="ph ph-dots-three-vertical"></i></button>
+                </div>
+                
+                <!-- The Extension Popup (Hidden by default) -->
+                <div id="extension-popup" class="extension-popup hidden">
+                    <div class="popup-header">
+                        <div class="header-logo"><i class="ph ph-shield-check"></i></div>
+                        <h3>JobScope Analyzer</h3>
+                        <button id="close-popup"><i class="ph ph-x"></i></button>
+                    </div>
+                    
+                    <div class="popup-content">
+                        <!-- Loading State -->
+                        <div id="analysis-loading" class="analysis-loading">
+                            <div class="spinner"></div>
+                            <p>Analyzing job listing...</p>
+                            <div class="loading-steps">
+                                <div class="step pending" id="step-whois"><i class="ph ph-circle"></i> Checking Domain WHOIS</div>
+                                <div class="step pending" id="step-email"><i class="ph ph-circle"></i> Verifying Contact Email</div>
+                                <div class="step pending" id="step-govt"><i class="ph ph-circle"></i> Querying Govt Records</div>
+                            </div>
+                        </div>
+
+                        <!-- Results State -->
+                        <div id="analysis-results" class="analysis-results hidden">
+                            <div class="score-container">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg"
+                                      d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <path class="circle" id="score-circle"
+                                      stroke-dasharray="0, 100"
+                                      d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <text x="18" y="20.35" class="percentage" id="score-text">0%</text>
+                                </svg>
+                                <div class="score-label" id="score-label">Calculating...</div>
+                            </div>
+                            
+                            <div class="results-breakdown">
+                                <h4>Analysis Breakdown</h4>
+                                <ul class="reason-list" id="reason-list">
+                                    <!-- Populated by JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Viewport -->
+            <div class="browser-viewport">
+                <main class="job-page">
+                    <header class="job-header">
+                        <div class="company-logo">
+                            <i class="ph ph-hexagon"></i>
+                        </div>
+                        <div class="job-title-group">
+                            <h1>Senior Frontend Engineer</h1>
+                            <p class="company-name">Nexus Global Tech Solutions LLC</p>
+                            <div class="tags">
+                                <span class="tag">Remote</span>
+                                <span class="tag">Full-Time</span>
+                                <span class="tag">$120k - $160k</span>
+                            </div>
+                        </div>
+                        <div class="apply-action">
+                            <button id="apply-btn" class="btn-primary">Apply Now</button>
+                        </div>
+                    </header>
+
+                    <section class="job-details">
+                        <h2>About the Role</h2>
+                        <p>We are seeking a highly motivated Senior Frontend Engineer to join our fast-growing startup. You will be responsible for building modern, responsive, and performant web applications that will touch millions of users worldwide.</p>
+                        
+                        <h2>Requirements</h2>
+                        <ul>
+                            <li>5+ years of experience with React, Vue, or Angular</li>
+                            <li>Deep understanding of modern CSS (Grid, Flexbox, Animations)</li>
+                            <li>Experience with state management solutions</li>
+                            <li>Ability to work independently in a fast-paced environment</li>
+                        </ul>
+
+                        <h2>Benefits</h2>
+                        <ul>
+                            <li>Competitive salary and equity package</li>
+                            <li>Unlimited PTO</li>
+                            <li>Comprehensive health, dental, and vision insurance</li>
+                            <li>Remote-first culture</li>
+                        </ul>
+                    </section>
+                </main>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
